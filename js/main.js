@@ -1,4 +1,7 @@
 import {createPhotosArray} from './data.js';
+import {drawPictures} from './picture.js';
 
-createPhotosArray();
+
+drawPictures(createPhotosArray());
+
 
