@@ -50,5 +50,19 @@ const drawBigPicture = ({url, likes, comments, description}) => {
 
 };
 
+  closePictureButton.addEventListener('click', () => {
+    document.body.classList.remove('modal-open');
+    bigPicture.classList.add('hidden');
+  });
+
+  document.addEventListener('keydown', (evt) => {
+    if (evt.code === 'Escape') {
+      document.body.classList.remove('modal-open');
+      bigPicture.classList.add('hidden');
+    }
+  });
+
+};
+
 
 export {drawBigPicture};

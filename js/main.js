@@ -5,5 +5,3 @@ import './form.js';
 
 drawPictures(createPhotosArray());
 
-
-
