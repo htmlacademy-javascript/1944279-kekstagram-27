@@ -3,6 +3,5 @@ import {drawPictures} from './picture.js';
 import './big-picture.js';
 import './form.js';
 
+
 drawPictures(createPhotosArray());
-
-
