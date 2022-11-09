@@ -1,3 +1,5 @@
+import {isEscapeKey} from './util.js';
+
 const bigPicture = document.querySelector('.big-picture');
 const commentsList = bigPicture.querySelector('.social__comments');
 const commentTemplate = commentsList.querySelector('.social__comment');
@@ -29,6 +31,24 @@ const drawBigPicture = ({url, likes, comments, description}) => {
   bigPicture.querySelector('.social__comment-count').classList.add('hidden');
   bigPicture.querySelector('.comments-loader').classList.add('hidden');
 
+  const hidePictureModal = () =>{
+    document.body.classList.remove('modal-open');
+    bigPicture.classList.add('hidden');
+  };
+
+  closePictureButton.addEventListener('click', () => {
+    hidePictureModal();
+  });
+
+  const onModalEscKeydown = (evt) => {
+    if (isEscapeKey(evt)) {
+      hidePictureModal();
+    }
+  };
+
+  document.addEventListener('keydown', onModalEscKeydown);
+
+
   closePictureButton.addEventListener('click', () => {
     document.body.classList.remove('modal-open');
     bigPicture.classList.add('hidden');
@@ -42,5 +62,6 @@ const drawBigPicture = ({url, likes, comments, description}) => {
   });
 
 };
+
 
 export {drawBigPicture};
