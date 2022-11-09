@@ -48,7 +48,6 @@ const drawBigPicture = ({url, likes, comments, description}) => {
 
   document.addEventListener('keydown', onModalEscKeydown);
 
-};
 
   closePictureButton.addEventListener('click', () => {
     document.body.classList.remove('modal-open');

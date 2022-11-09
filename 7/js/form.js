@@ -52,7 +52,7 @@ const hashtagsHandler = (value) => {
       error: 'Хэш-тег должен начинаться с символа #',
     },
     {
-      check: inputArray.some((item, num, arr) => arr.includes(item, num +1)),
+      check: inputArray.some((item, num, arr) => arr.includes(item, num + 1)),
       error: 'Хэш-теги не должны повторяться',
     },
     {
