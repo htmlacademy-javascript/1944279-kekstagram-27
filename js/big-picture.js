@@ -22,6 +22,7 @@ const drawBigPicture = ({url, likes, comments, description}) => {
 
   commentsList.innerHTML = '';
   let numberOfComments = 0;
+  commentLoaderButton.classList.remove('hidden');
   const commentLoad = (commentsArray, index) => {
     for (let i = index; i < index + NUMBER_OF_COMMENTS_TO_LOAD && i < commentsArray.length; i++) {
       const newComment = commentTemplate.cloneNode(true);
