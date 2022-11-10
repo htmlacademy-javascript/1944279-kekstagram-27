@@ -9,7 +9,7 @@ const LIKES_COUNT = {
   min: 15,
   max: 200,
 };
-const COMMENT_COUNT_MAX = 4;
+const COMMENT_COUNT_MAX = 20;
 const AVATAR_NUM = 6;
 
 const DESCRIPTIONS = [
