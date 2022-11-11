@@ -9,7 +9,7 @@ const LIKES_COUNT = {
   min: 15,
   max: 200,
 };
-const COMMENT_COUNT_MAX = 4;
+const COMMENT_COUNT_MAX = 20;
 const AVATAR_NUM = 6;
 
 const DESCRIPTIONS = [
@@ -22,6 +22,7 @@ const DESCRIPTIONS = [
   'Клубника',
   'Морс',
   'Самолёт на пляже',
+  'Обувь',
   'Забор на пляже',
   'Белая машина',
   'Салат',
@@ -77,7 +78,7 @@ const createComment = (Index) => ({
 const createPhotoDescription = (Index) => ({
   id: Index,
   url: `photos/${Index}.jpg`,
-  description: getRandomArrayElement(DESCRIPTIONS),
+  description: DESCRIPTIONS[Index - 1],
   likes: getRandomPositiveInteger(LIKES_COUNT.min, LIKES_COUNT.max),
   comments: Array.from({length: getRandomPositiveInteger(0, COMMENT_COUNT_MAX)}, (_, commentIndex) => createComment(commentIndex + 1)),
 });
