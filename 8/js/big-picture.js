@@ -22,6 +22,7 @@ const drawBigPicture = ({url, likes, comments, description}) => {
 
   commentsList.innerHTML = '';
   let numberOfComments = 0;
+  commentLoaderButton.classList.remove('hidden');
   const commentLoad = (commentsArray, index) => {
     for (let i = index; i < index + NUMBER_OF_COMMENTS_TO_LOAD && i < commentsArray.length; i++) {
       const newComment = commentTemplate.cloneNode(true);
@@ -45,19 +46,12 @@ const drawBigPicture = ({url, likes, comments, description}) => {
   };
   commentLoad(comments, numberOfComments);
 
-  commentLoaderButton.addEventListener('click', () => {
+  const onLoadKeyClick = () => {
     commentLoad(comments, numberOfComments);
-  });
-
-  const hidePictureModal = () =>{
-    document.body.classList.remove('modal-open');
-    bigPicture.classList.add('hidden');
   };
 
+  commentLoaderButton.addEventListener('click', onLoadKeyClick);
 
-  closePictureButton.addEventListener('click', () => {
-    hidePictureModal();
-  });
 
   const onModalEscKeydown = (evt) => {
     if (isEscapeKey(evt)) {
@@ -65,19 +59,17 @@ const drawBigPicture = ({url, likes, comments, description}) => {
     }
   };
 
-  document.addEventListener('keydown', onModalEscKeydown);
-
-
-  closePictureButton.addEventListener('click', () => {
+  function hidePictureModal () {
     document.body.classList.remove('modal-open');
     bigPicture.classList.add('hidden');
-  });
 
-  document.addEventListener('keydown', (evt) => {
-    if (evt.code === 'Escape') {
-      document.body.classList.remove('modal-open');
-      bigPicture.classList.add('hidden');
-    }
+    document.removeEventListener('keydown', onModalEscKeydown);
+    commentLoaderButton.removeEventListener('click', onLoadKeyClick);
+  }
+
+  document.addEventListener('keydown', onModalEscKeydown);
+  closePictureButton.addEventListener('click', () => {
+    hidePictureModal();
   });
 
 };
