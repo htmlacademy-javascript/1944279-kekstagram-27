@@ -1,4 +1,5 @@
 import {isEscapeKey} from './util.js';
+import { resetEffects } from './effects.js';
 
 const MAX_LENGTH_HASHTAG = 20;
 const MAX_COUNT_HASHTAG = 5;
@@ -114,6 +115,7 @@ const closeForm = () =>{
 
   uploadForm.reset();
   pristine.reset();
+  resetEffects();
 };
 
 function onEscKey(evt) {
