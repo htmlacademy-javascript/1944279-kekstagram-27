@@ -1,5 +1,7 @@
 import {isEscapeKey} from './util.js';
-import { resetEffects } from './effects.js';
+import {resetEffects} from './effects.js';
+import {sendData} from './api.js';
+import {resetScale} from './scale.js';
 
 const MAX_LENGTH_HASHTAG = 20;
 const MAX_COUNT_HASHTAG = 5;
@@ -13,6 +15,8 @@ const cancelButton = document.querySelector('#upload-cancel');
 const uploadButton = document.querySelector('#upload-submit');
 const hashTagField = document.querySelector('.text__hashtags');
 const descriptionField = document.querySelector('.text__description');
+const successTemplate = document.querySelector('#success').content;
+const errorTemplate = document.querySelector('#error').content;
 
 
 const pristine = new Pristine(uploadForm, {
@@ -103,7 +107,6 @@ const showForm = () =>{
   pictureUploadOverlay.classList.remove('hidden');
 
   document.addEventListener('keydown', onEscKey);
-  cancelButton.addEventListener('click', onCancelButton);
 };
 
 const closeForm = () =>{
@@ -111,20 +114,21 @@ const closeForm = () =>{
   pictureUploadOverlay.classList.add('hidden');
 
   document.removeEventListener('keydown', onEscKey);
-  cancelButton.removeEventListener('click', onCancelButton);
 
   uploadForm.reset();
   pristine.reset();
   resetEffects();
+  resetScale();
 };
 
 function onEscKey(evt) {
-  if (isEscapeKey(evt)) {
-    if (document.activeElement !== hashTagField && document.activeElement !== descriptionField) {
-      evt.preventDefault();
+  if (isEscapeKey(evt)
+   && document.activeElement !== hashTagField
+   && document.activeElement !== descriptionField
+   && !document.querySelector('.error')) {
+    evt.preventDefault();
 
-      closeForm();
-    }
+    closeForm();
   }
 }
 
@@ -140,6 +144,97 @@ const onFileFieldChange = (evt) =>{
   showForm();
 };
 
+
+const blockSubmitButton = () => {
+  uploadButton.disabled = true;
+  uploadButton.textContent = 'ОТПРАВКА...';
+};
+
+const unblockSubmitButton = () => {
+  uploadButton.disabled = false;
+  uploadButton.textContent = 'ОПУБЛИКОВАТЬ';
+};
+
+const closeError = () => {
+  document.body.removeChild(document.querySelector('.error'));
+  document.body.removeEventListener('keydown', onEscCloseErrorPopup);
+};
+
+const onClickCloseError = (evt) => {
+  if (evt.target === document.querySelector('.error') || evt.target === document.querySelector('.error__button')) {
+    closeError();
+  }
+};
+
+function onEscCloseErrorPopup (evt) {
+  if (isEscapeKey(evt) && document.querySelector('.error')) {
+    evt.preventDefault();
+
+    setTimeout(() => {
+      closeError();
+    }, 50);
+  }
+}
+
+const showErrorPopup = () => {
+  const errorPopup = errorTemplate.cloneNode(true);
+  document.body.appendChild(errorPopup);
+  document.body.addEventListener('keydown', onEscCloseErrorPopup);
+  document.querySelector('.error__button').addEventListener('click', onClickCloseError);
+  document.querySelector('.error').addEventListener('click', onClickCloseError);
+};
+
+const closeSuccess = () => {
+  document.body.removeChild(document.querySelector('.success'));
+  document.body.removeEventListener('keydown', onEscCloseSuccessPopup);
+  closeForm();
+};
+
+const onClickCloseSuccessPopup = (evt) => {
+  if (evt.target === document.querySelector('.success') || evt.target === document.querySelector('.success__button')) {
+    closeSuccess();
+  }
+};
+
+function onEscCloseSuccessPopup (evt) {
+  if (isEscapeKey(evt) && document.querySelector('.success')) {
+    evt.preventDefault();
+
+    closeSuccess();
+  }
+}
+
+const showSuccessPopup = () => {
+  const successPopup = successTemplate.cloneNode(true);
+  document.body.appendChild(successPopup);
+  document.body.addEventListener('keydown', onEscCloseSuccessPopup);
+  document.querySelector('.success__button').addEventListener('click', onClickCloseSuccessPopup);
+  document.querySelector('.success').addEventListener('click', onClickCloseSuccessPopup);
+};
+
+const submitPicture = () => {
+  uploadForm.addEventListener('submit', (evt) => {
+    evt.preventDefault();
+
+    const isValid = pristine.validate();
+    if (isValid) {
+      blockSubmitButton();
+      sendData(
+        () => {
+          showSuccessPopup();
+          unblockSubmitButton();
+        },
+        () => {
+          showErrorPopup();
+          unblockSubmitButton();
+        },
+        new FormData(evt.target),
+      );
+    }
+  });
+};
+
+submitPicture();
+
 uploadFileField.addEventListener('change', onFileFieldChange);
-
-
+cancelButton.addEventListener('click', onCancelButton);

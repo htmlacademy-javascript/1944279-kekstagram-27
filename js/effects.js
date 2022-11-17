@@ -1,15 +1,17 @@
-import { EFFECTS } from './effects-settings.js';
+import {EFFECTS} from './effects-settings.js';
 const DEFAULT_EFFECT = EFFECTS[0];
 
 const effectsList = document.querySelector('.effects__list');
 const picture = document.querySelector('.img-upload__preview img');
 const effectSlider = document.querySelector('.effect-level__slider');
 const effectLevelValue = document.querySelector('.effect-level__value');
+const effectSliderBackdrop = document.querySelector('.effect-level');
 
 let selectedEffect = DEFAULT_EFFECT;
 
 const updateSlider = () => {
   effectSlider.classList.remove('hidden');
+  effectSliderBackdrop.classList.remove('hidden');
   effectSlider.noUiSlider.updateOptions({
     range: {
       min: selectedEffect.min,
@@ -21,6 +23,7 @@ const updateSlider = () => {
 
   if(selectedEffect === DEFAULT_EFFECT) {
     effectSlider.classList.add('hidden');
+    effectSliderBackdrop.classList.add('hidden');
   }
 };
 
@@ -64,5 +67,5 @@ const resetEffects = () => {
   updateSlider();
 };
 
-export { resetEffects };
+export {resetEffects};
 

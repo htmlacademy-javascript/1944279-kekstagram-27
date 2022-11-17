@@ -1,4 +1,4 @@
-import { isEscapeKey } from './util.js';
+import {isEscapeKey} from './util.js';
 
 const NUMBER_OF_COMMENTS_TO_LOAD = 5;
 
@@ -75,4 +75,4 @@ const drawBigPicture = ({url, likes, comments, description}) => {
 };
 
 
-export { drawBigPicture };
+export {drawBigPicture};

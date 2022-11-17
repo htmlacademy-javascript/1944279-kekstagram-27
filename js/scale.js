@@ -34,4 +34,10 @@ const onScaleButtonClick = (evt) => {
   }
 };
 
+const resetScale = () => {
+  setScale(SCALE.DEFAULT);
+};
+
 scaleControlBlock.addEventListener('click', onScaleButtonClick);
+
+export {resetScale};
