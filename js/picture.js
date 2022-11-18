@@ -21,4 +21,11 @@ const drawPictures = (picturesData) => {
   picturesContainer.append(fragment);
 };
 
-export {drawPictures};
+const removePictures = () => {
+  document.querySelectorAll('.picture')
+    .forEach((photo) => {
+      photo.remove();
+    });
+};
+
+export {drawPictures, removePictures};
