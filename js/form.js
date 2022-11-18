@@ -212,29 +212,26 @@ const showSuccessPopup = () => {
   document.querySelector('.success').addEventListener('click', onClickCloseSuccessPopup);
 };
 
-const submitPicture = () => {
-  uploadForm.addEventListener('submit', (evt) => {
-    evt.preventDefault();
+const onFormSubmit = (evt) => {
+  evt.preventDefault();
 
-    const isValid = pristine.validate();
-    if (isValid) {
-      blockSubmitButton();
-      sendData(
-        () => {
-          showSuccessPopup();
-          unblockSubmitButton();
-        },
-        () => {
-          showErrorPopup();
-          unblockSubmitButton();
-        },
-        new FormData(evt.target),
-      );
-    }
-  });
+  const isValid = pristine.validate();
+  if (isValid) {
+    blockSubmitButton();
+    sendData(
+      () => {
+        showSuccessPopup();
+        unblockSubmitButton();
+      },
+      () => {
+        showErrorPopup();
+        unblockSubmitButton();
+      },
+      new FormData(evt.target),
+    );
+  }
 };
 
-submitPicture();
-
+uploadForm.addEventListener('submit', onFormSubmit);
 uploadFileField.addEventListener('change', onFileFieldChange);
 cancelButton.addEventListener('click', onCancelButton);
