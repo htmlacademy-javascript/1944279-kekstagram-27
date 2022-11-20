@@ -8,7 +8,7 @@ const drawPictures = (picturesData) => {
   for(const pictureElement of picturesData){
     const picture = pictureTemplate.cloneNode(true);
 
-    const { url, description, comments, likes } = pictureElement;
+    const {url, description, comments, likes} = pictureElement;
 
     picture.querySelector('.picture__img').src = url;
     picture.querySelector('.picture__img').alt = description;
