@@ -11,7 +11,6 @@ const SCALE = {
 
 scaleField.value = `${SCALE.DEFAULT}%`;
 
-
 const setScale = (scaleValue) => {
   picture.style.transform = `scale(${scaleValue / 100})`;
   scaleField.value = `${scaleValue}%`;

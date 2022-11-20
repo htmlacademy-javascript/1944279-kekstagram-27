@@ -5,7 +5,7 @@ import {resetScale} from './scale.js';
 
 const MAX_LENGTH_HASHTAG = 20;
 const MAX_COUNT_HASHTAG = 5;
-const VALID_SIMBOLS_HASHTAG = new RegExp('^#[a-zа-яё0-9{1, 19}$]', 'i');
+const VALID_SIMBOLS_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const uploadForm = document.querySelector('.img-upload__form');
 const inputHashtag = document.querySelector('.text__hashtags');
@@ -30,9 +30,9 @@ const pristine = new Pristine(uploadForm, {
 
 let errorMessage = '';
 
-const error = () => errorMessage;
+const getErrorMessage = () => errorMessage;
 
-const hashtagsHandler = (value) => {
+const checkHashtags = (value) => {
   errorMessage = '';
 
   const inputText = value.toLowerCase().trim();
@@ -41,35 +41,35 @@ const hashtagsHandler = (value) => {
     return true;
   }
 
-  const inputArray = inputText.split(/\s+/);
+  const tags = inputText.split(/\s+/);
 
-  if (inputArray.length === 0) {
+  if (tags.length === 0) {
     return true;
   }
 
   const rules = [
     {
-      check: inputArray.some((item) => item.indexOf('#', 1) >= 1),
+      check: tags.some((item) => item.indexOf('#', 1) >= 1),
       error: 'Хэш-теги разделяются пробелами',
     },
     {
-      check: inputArray.some((item) => item[0] !== '#'),
+      check: tags.some((item) => item[0] !== '#'),
       error: 'Хэш-тег должен начинаться с символа #',
     },
     {
-      check: inputArray.some((item, num, arr) => arr.includes(item, num + 1)),
+      check: tags.some((item, num, arr) => arr.includes(item, num + 1)),
       error: 'Хэш-теги не должны повторяться',
     },
     {
-      check: inputArray.some((item) => item.length > MAX_LENGTH_HASHTAG),
+      check: tags.some((item) => item.length > MAX_LENGTH_HASHTAG),
       error: `Максимальная длина одного хэш-тега ${MAX_LENGTH_HASHTAG} символов, включая решётку`
     },
     {
-      check: inputArray.length > MAX_COUNT_HASHTAG,
+      check: tags.length > MAX_COUNT_HASHTAG,
       error: `Нельзя указать больше ${MAX_COUNT_HASHTAG} хэш-тегов`,
     },
     {
-      check: inputArray.some((item) => !VALID_SIMBOLS_HASHTAG.test(item)),
+      check: tags.some((item) => !VALID_SIMBOLS_HASHTAG.test(item)),
       error: 'Хеш-тег содержит недопустимые символы',
     },
   ];
@@ -83,7 +83,7 @@ const hashtagsHandler = (value) => {
   });
 };
 
-pristine.addValidator(inputHashtag, hashtagsHandler, error, 2, false);
+pristine.addValidator(inputHashtag, checkHashtags, getErrorMessage, 2, false);
 
 const onHashtagInput = () => {
   if (pristine.validate()) {
@@ -132,7 +132,7 @@ function onEscKey(evt) {
   }
 }
 
-function onCancelButton(evt) {
+function onCancelClick(evt) {
   evt.preventDefault();
 
   closeForm();
@@ -157,16 +157,20 @@ const unblockSubmitButton = () => {
 
 const closeError = () => {
   document.body.removeChild(document.querySelector('.error'));
-  document.body.removeEventListener('keydown', onEscCloseErrorPopup);
+  document.body.removeEventListener('keydown', onEscCloseErrorKeydown);
 };
 
-const onClickCloseError = (evt) => {
-  if (evt.target === document.querySelector('.error') || evt.target === document.querySelector('.error__button')) {
+const onCloseErrorClick = () => {
+  closeError();
+};
+
+const onOutsideErrorModalClick = (evt) => {
+  if (evt.target.matches('.error')) {
     closeError();
   }
 };
 
-function onEscCloseErrorPopup (evt) {
+function onEscCloseErrorKeydown (evt) {
   if (isEscapeKey(evt) && document.querySelector('.error')) {
     evt.preventDefault();
 
@@ -179,24 +183,28 @@ function onEscCloseErrorPopup (evt) {
 const showErrorPopup = () => {
   const errorPopup = errorTemplate.cloneNode(true);
   document.body.appendChild(errorPopup);
-  document.body.addEventListener('keydown', onEscCloseErrorPopup);
-  document.querySelector('.error__button').addEventListener('click', onClickCloseError);
-  document.querySelector('.error').addEventListener('click', onClickCloseError);
+  document.body.addEventListener('keydown', onEscCloseErrorKeydown);
+  document.querySelector('.error__button').addEventListener('click', onCloseErrorClick);
+  document.querySelector('.error').addEventListener('click', onOutsideErrorModalClick);
 };
 
 const closeSuccess = () => {
   document.body.removeChild(document.querySelector('.success'));
-  document.body.removeEventListener('keydown', onEscCloseSuccessPopup);
+  document.body.removeEventListener('keydown', onEscCloseSuccessKeydown);
   closeForm();
 };
 
-const onClickCloseSuccessPopup = (evt) => {
-  if (evt.target === document.querySelector('.success') || evt.target === document.querySelector('.success__button')) {
+const onCloseSuccessButtonClick = () => {
+  closeSuccess();
+};
+
+const onOutsideSuccessModalClick = (evt) => {
+  if (evt.target.matches('.success')) {
     closeSuccess();
   }
 };
 
-function onEscCloseSuccessPopup (evt) {
+function onEscCloseSuccessKeydown (evt) {
   if (isEscapeKey(evt) && document.querySelector('.success')) {
     evt.preventDefault();
 
@@ -207,9 +215,9 @@ function onEscCloseSuccessPopup (evt) {
 const showSuccessPopup = () => {
   const successPopup = successTemplate.cloneNode(true);
   document.body.appendChild(successPopup);
-  document.body.addEventListener('keydown', onEscCloseSuccessPopup);
-  document.querySelector('.success__button').addEventListener('click', onClickCloseSuccessPopup);
-  document.querySelector('.success').addEventListener('click', onClickCloseSuccessPopup);
+  document.body.addEventListener('keydown', onEscCloseSuccessKeydown);
+  document.querySelector('.success__button').addEventListener('click', onCloseSuccessButtonClick);
+  document.querySelector('.success').addEventListener('click', onOutsideSuccessModalClick);
 };
 
 const onFormSubmit = (evt) => {
@@ -234,4 +242,4 @@ const onFormSubmit = (evt) => {
 
 uploadForm.addEventListener('submit', onFormSubmit);
 uploadFileField.addEventListener('change', onFileFieldChange);
-cancelButton.addEventListener('click', onCancelButton);
+cancelButton.addEventListener('click', onCancelClick);

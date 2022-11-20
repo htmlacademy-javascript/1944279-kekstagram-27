@@ -5,13 +5,13 @@ import {getData} from './api.js';
 
 const COUNT_OF_FILTER = 10;
 
-const galleryFilters = document.querySelector('.img-filters');
+const galleryFilter = document.querySelector('.img-filters');
 
 let picturesData;
 const onPhotoLoadError = () => showAlert('Не удалось загрузить фотографии');
 getData((pics) => {
   drawPictures(pics);
-  galleryFilters.classList.remove('img-filters--inactive');
+  galleryFilter.classList.remove('img-filters--inactive');
   picturesData = pics;
 }, onPhotoLoadError);
 
@@ -20,7 +20,7 @@ const onPictureClick = (evt) => {
   if (evt.target.matches('.picture__img')) {
     const pictureUrl = evt.target.getAttribute('src');
     for (let i = 0; i < picturesData.length; i++){
-      if(pictureUrl.includes(picturesData[i].url)){
+      if (pictureUrl.includes(picturesData[i].url)) {
         drawBigPicture(picturesData[i]);
         break;
       }
@@ -37,19 +37,26 @@ const availableFilters = {
   }
 };
 
-const onSortButtonClick = debounce((evt) => {
-  const selected = galleryFilters.querySelector('.img-filters__button--active');
-  if (selected) {
-    selected.classList.remove('img-filters__button--active');
-
-    evt.target.classList.add('img-filters__button--active');
-    removePictures();
-    drawPictures(availableFilters[evt.target.id]());
-  }
+const redrawGallery = debounce((filterName) => {
+  removePictures();
+  drawPictures(availableFilters[filterName]());
 });
+
+const onSortButtonClick = (evt) => {
+  if (evt.target.matches('.img-filters__button')) {
+    const selected = galleryFilter.querySelector('.img-filters__button--active');
+    if (selected) {
+      selected.classList.remove('img-filters__button--active');
+
+      evt.target.classList.add('img-filters__button--active');
+      redrawGallery(evt.target.id);
+    }
+  }
+};
+
 
 document.querySelector('.pictures').addEventListener('click', onPictureClick);
 
-galleryFilters.addEventListener('click', onSortButtonClick);
+galleryFilter.addEventListener('click', onSortButtonClick);
 
 
