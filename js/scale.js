@@ -2,24 +2,24 @@ const scaleControlBlock = document.querySelector('.scale');
 const scaleField = document.querySelector('.scale__control--value');
 const picture = document.querySelector('.img-upload__preview img');
 
-const SCALE = {
+const Scale = {
   STEP: 25,
   MIN: 25,
   MAX: 100,
   DEFAULT: 100,
 };
 
-scaleField.value = `${SCALE.DEFAULT}%`;
+scaleField.value = `${Scale.DEFAULT}%`;
 
 const setScale = (scaleValue) => {
-  picture.style.transform = `scale(${scaleValue / 100})`;
+  picture.style.transform = `scale(${scaleValue / Scale.DEFAULT})`;
   scaleField.value = `${scaleValue}%`;
 };
 
 const calculateScale = (scaleMultiply) => {
   const currentScale = parseInt(scaleField.value, 10);
-  const newScale = currentScale + SCALE.STEP * scaleMultiply;
-  if (newScale < SCALE.MIN || newScale > SCALE.MAX) {
+  const newScale = currentScale + Scale.STEP * scaleMultiply;
+  if (newScale < Scale.MIN || newScale > Scale.MAX) {
     return;
   }
   setScale(newScale);
@@ -34,7 +34,7 @@ const onScaleButtonClick = (evt) => {
 };
 
 const resetScale = () => {
-  setScale(SCALE.DEFAULT);
+  setScale(Scale.DEFAULT);
 };
 
 scaleControlBlock.addEventListener('click', onScaleButtonClick);

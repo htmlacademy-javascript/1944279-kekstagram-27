@@ -8,13 +8,13 @@ const MAX_COUNT_HASHTAG = 5;
 const VALID_SIMBOLS_HASHTAG = /^#[a-zа-яё0-9]{1,19}$/i;
 
 const uploadForm = document.querySelector('.img-upload__form');
-const inputHashtag = document.querySelector('.text__hashtags');
-const uploadFileField = document.querySelector('#upload-file');
-const pictureUploadOverlay = document.querySelector('.img-upload__overlay');
-const cancelButton = document.querySelector('#upload-cancel');
-const uploadButton = document.querySelector('#upload-submit');
-const hashTagField = document.querySelector('.text__hashtags');
-const descriptionField = document.querySelector('.text__description');
+const uploadFileField = uploadForm.querySelector('#upload-file');
+const pictureUploadOverlay = uploadForm.querySelector('.img-upload__overlay');//
+const cancelButton = pictureUploadOverlay.querySelector('#upload-cancel');
+const uploadButton = pictureUploadOverlay.querySelector('#upload-submit');
+const hashTagField = pictureUploadOverlay.querySelector('.text__hashtags');
+const inputHashtag = pictureUploadOverlay.querySelector('.text__hashtags');
+const descriptionField = pictureUploadOverlay.querySelector('.text__description');
 const successTemplate = document.querySelector('#success').content;
 const errorTemplate = document.querySelector('#error').content;
 

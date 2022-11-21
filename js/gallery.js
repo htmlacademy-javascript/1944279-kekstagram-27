@@ -5,6 +5,7 @@ import {getData} from './api.js';
 
 const COUNT_OF_FILTER = 10;
 
+const picturesContainer = document.querySelector('.pictures');
 const galleryFilter = document.querySelector('.img-filters');
 
 let picturesData;
@@ -55,8 +56,7 @@ const onSortButtonClick = (evt) => {
 };
 
 
-document.querySelector('.pictures').addEventListener('click', onPictureClick);
-
+picturesContainer.addEventListener('click', onPictureClick);
 galleryFilter.addEventListener('click', onSortButtonClick);
 
 
