@@ -1,8 +1,8 @@
+const picturesContainer = document.querySelector('.pictures');
 const pictureTemplateFragment = document.querySelector('#picture').content;
 const pictureTemplate = pictureTemplateFragment.querySelector('.picture');
-const fragment = document.createDocumentFragment();
-const picturesContainer = document.querySelector('.pictures');
 
+const fragment = document.createDocumentFragment();
 
 const drawPictures = (picturesData) => {
   for(const pictureElement of picturesData){

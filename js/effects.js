@@ -1,11 +1,12 @@
 import {EFFECTS} from './effects-settings.js';
 const DEFAULT_EFFECT = EFFECTS[0];
 
-const effectsList = document.querySelector('.effects__list');
-const picture = document.querySelector('.img-upload__preview img');
-const effectSlider = document.querySelector('.effect-level__slider');
-const effectLevelValue = document.querySelector('.effect-level__value');
-const effectSliderBackdrop = document.querySelector('.effect-level');
+const uploadForm = document.querySelector('.img-upload__form');
+const effectsList = uploadForm.querySelector('.effects__list');
+const picture = uploadForm.querySelector('.img-upload__preview img');
+const effectSlider = uploadForm.querySelector('.effect-level__slider');
+const effectLevelValue = uploadForm.querySelector('.effect-level__value');
+const effectSliderBackdrop = uploadForm.querySelector('.effect-level');
 
 let selectedEffect = DEFAULT_EFFECT;
 
