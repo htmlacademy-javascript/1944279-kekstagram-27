@@ -106,14 +106,14 @@ const showForm = () =>{
   document.body.classList.add('modal-open');
   pictureUploadOverlay.classList.remove('hidden');
 
-  document.addEventListener('keydown', onEscKey);
+  document.addEventListener('keydown', onDocumentKeydown);
 };
 
 const closeForm = () =>{
   document.body.classList.remove('modal-open');
   pictureUploadOverlay.classList.add('hidden');
 
-  document.removeEventListener('keydown', onEscKey);
+  document.removeEventListener('keydown', onDocumentKeydown);
 
   uploadForm.reset();
   pristine.reset();
@@ -121,7 +121,7 @@ const closeForm = () =>{
   resetScale();
 };
 
-function onEscKey(evt) {
+function onDocumentKeydown(evt) {
   if (isEscapeKey(evt)
    && document.activeElement !== hashTagField
    && document.activeElement !== descriptionField
@@ -132,13 +132,13 @@ function onEscKey(evt) {
   }
 }
 
-function onCancelClick(evt) {
+function onCancelButtonClick(evt) {
   evt.preventDefault();
 
   closeForm();
 }
 
-const onFileFieldChange = (evt) =>{
+const onUploadFileFieldChange = (evt) =>{
   evt.preventDefault();
 
   showForm();
@@ -157,7 +157,7 @@ const unblockSubmitButton = () => {
 
 const closeError = () => {
   document.body.removeChild(document.querySelector('.error'));
-  document.body.removeEventListener('keydown', onEscCloseErrorKeydown);
+  document.removeEventListener('keydown', onEscCloseErrorKeydown);
 };
 
 const onCloseErrorClick = () => {
@@ -183,14 +183,14 @@ function onEscCloseErrorKeydown (evt) {
 const showErrorPopup = () => {
   const errorPopup = errorTemplate.cloneNode(true);
   document.body.appendChild(errorPopup);
-  document.body.addEventListener('keydown', onEscCloseErrorKeydown);
+  document.addEventListener('keydown', onEscCloseErrorKeydown);
   document.querySelector('.error__button').addEventListener('click', onCloseErrorClick);
   document.querySelector('.error').addEventListener('click', onOutsideErrorModalClick);
 };
 
 const closeSuccess = () => {
   document.body.removeChild(document.querySelector('.success'));
-  document.body.removeEventListener('keydown', onEscCloseSuccessKeydown);
+  document.removeEventListener('keydown', onEscCloseSuccessKeydown);
   closeForm();
 };
 
@@ -215,12 +215,12 @@ function onEscCloseSuccessKeydown (evt) {
 const showSuccessPopup = () => {
   const successPopup = successTemplate.cloneNode(true);
   document.body.appendChild(successPopup);
-  document.body.addEventListener('keydown', onEscCloseSuccessKeydown);
+  document.addEventListener('keydown', onEscCloseSuccessKeydown);
   document.querySelector('.success__button').addEventListener('click', onCloseSuccessButtonClick);
   document.querySelector('.success').addEventListener('click', onOutsideSuccessModalClick);
 };
 
-const onFormSubmit = (evt) => {
+const onUploadFormSubmit = (evt) => {
   evt.preventDefault();
 
   const isValid = pristine.validate();
@@ -240,6 +240,6 @@ const onFormSubmit = (evt) => {
   }
 };
 
-uploadForm.addEventListener('submit', onFormSubmit);
-uploadFileField.addEventListener('change', onFileFieldChange);
-cancelButton.addEventListener('click', onCancelClick);
+uploadForm.addEventListener('submit', onUploadFormSubmit);
+uploadFileField.addEventListener('change', onUploadFileFieldChange);
+cancelButton.addEventListener('click', onCancelButtonClick);

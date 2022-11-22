@@ -28,7 +28,7 @@ const updateSlider = () => {
   }
 };
 
-const onEffectButtonClick = (evt) => {
+const onEffectsListClick = (evt) => {
   if (evt.target.type === 'radio') {
     selectedEffect = EFFECTS.find((effect) => effect.name === evt.target.value);
     updateSlider();
@@ -45,7 +45,7 @@ noUiSlider.create(effectSlider, {
   connect: 'lower',
 });
 
-const onSliderUpdate = () => {
+const onEffectSliderUpdate = () => {
   picture.style.filter = 'none';
   picture.className = '';
   effectLevelValue.value = '';
@@ -60,8 +60,8 @@ const onSliderUpdate = () => {
 
 updateSlider();
 
-effectsList.addEventListener('click', onEffectButtonClick);
-effectSlider.noUiSlider.on('update', onSliderUpdate);
+effectsList.addEventListener('click', onEffectsListClick);
+effectSlider.noUiSlider.on('update', onEffectSliderUpdate);
 
 const resetEffects = () => {
   selectedEffect = DEFAULT_EFFECT;
