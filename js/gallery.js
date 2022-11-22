@@ -17,15 +17,14 @@ getData((pics) => {
 }, onPhotoLoadError);
 
 
-const onPictureClick = (evt) => {
+const onPicturesContainerClick = (evt) => {
   if (evt.target.matches('.picture__img')) {
-    const pictureUrl = evt.target.getAttribute('src');
-    for (let i = 0; i < picturesData.length; i++){
-      if (pictureUrl.includes(picturesData[i].url)) {
-        drawBigPicture(picturesData[i]);
-        break;
+    const pictureUrl = evt.target.src;
+    picturesData.forEach((picture) => {
+      if (pictureUrl.includes(picture.url)) {
+        return drawBigPicture(picture);
       }
-    }
+    });
   }
 };
 
@@ -43,7 +42,7 @@ const redrawGallery = debounce((filterName) => {
   drawPictures(availableFilters[filterName]());
 });
 
-const onSortButtonClick = (evt) => {
+const onGalleryFilterClick = (evt) => {
   if (evt.target.matches('.img-filters__button')) {
     const selected = galleryFilter.querySelector('.img-filters__button--active');
     if (selected) {
@@ -56,7 +55,7 @@ const onSortButtonClick = (evt) => {
 };
 
 
-picturesContainer.addEventListener('click', onPictureClick);
-galleryFilter.addEventListener('click', onSortButtonClick);
+picturesContainer.addEventListener('click', onPicturesContainerClick);
+galleryFilter.addEventListener('click', onGalleryFilterClick);
 
 

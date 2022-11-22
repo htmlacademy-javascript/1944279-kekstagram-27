@@ -25,7 +25,7 @@ const calculateScale = (scaleMultiply) => {
   setScale(newScale);
 };
 
-const onScaleButtonClick = (evt) => {
+const onScaleControlBlockClick = (evt) => {
   if (evt.target.classList.contains('scale__control--bigger')) {
     calculateScale(1);
   } else if (evt.target.classList.contains('scale__control--smaller')) {
@@ -37,6 +37,6 @@ const resetScale = () => {
   setScale(Scale.DEFAULT);
 };
 
-scaleControlBlock.addEventListener('click', onScaleButtonClick);
+scaleControlBlock.addEventListener('click', onScaleControlBlockClick);
 
 export {resetScale};

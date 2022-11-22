@@ -47,32 +47,33 @@ const drawBigPicture = ({url, likes, comments, description}) => {
   commentLoaderButton.classList.remove('hidden');
   loadComments(comments, numberOfLoadedComments);
 
-  const onLoadKeyClick = () => {
+  const onCommentLoaderButtonClick = () => {
     loadComments(comments, numberOfLoadedComments);
   };
 
-  commentLoaderButton.addEventListener('click', onLoadKeyClick);
+  commentLoaderButton.addEventListener('click', onCommentLoaderButtonClick);
 
-  const onModalKeydown = (evt) => {
+  const onDocumentKeydown = (evt) => {
     if (isEscapeKey(evt)) {
       hidePictureModal();
     }
+  };
+
+  const onClosePictureButtonClick = () => {
+    hidePictureModal();
   };
 
   function hidePictureModal () {
     document.body.classList.remove('modal-open');
     bigPicture.classList.add('hidden');
 
-    document.removeEventListener('keydown', onModalKeydown);
-    commentLoaderButton.removeEventListener('click', onLoadKeyClick);
+    document.removeEventListener('keydown', onDocumentKeydown);
+    commentLoaderButton.removeEventListener('click', onCommentLoaderButtonClick);
+    closePictureButton.removeEventListener('click', onClosePictureButtonClick);
     numberOfLoadedComments = 0;
   }
 
-  const onClosePictureButtonClick = () => {
-    hidePictureModal();
-  };
-
-  document.addEventListener('keydown', onModalKeydown);
+  document.addEventListener('keydown', onDocumentKeydown);
   closePictureButton.addEventListener('click', onClosePictureButtonClick);
 };
 
